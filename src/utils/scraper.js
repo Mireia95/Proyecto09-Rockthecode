@@ -20,10 +20,13 @@ const scraper = async (url) => {
   });
 
   //espero 10 segundos para que aparezca el pop up de ofertas.
-  setTimeout(() => {
-    const popUp = page.$('#wps-overlay-close-button');
+  //si no aparece seguimos
+  setTimeout(async () => {
+    const popUp = await page.$('#wps-overlay-close-button');
     if (popUp) {
       page.click('#wps-overlay-close-button');
+    } else {
+      console.log('no hay pop up de descuento');
     }
   }, 10000);
 
@@ -48,7 +51,7 @@ const scraper = async (url) => {
 const getProducts = async (dataProduct, arrayProducts, page, browser) => {
   //recogo los divs con los productos
   const arrayDivsProducts = await page.$$(`[data-start="${dataProduct}"]`);
-  console.log('prova');
+  console.log('ejecutando getProducts');
 
   //ciclo for para recoger los datos de todos los productos que tengo en arrayDivsProducts
   for (const product of arrayDivsProducts) {
